@@ -2,7 +2,7 @@
 
 import numpy as np
 import rospy
-from CMU_UNet_Node.msg import line_2pts, line_list
+from dummy_vision.msg import line_2pts, line_list
 from nav_msgs.msg import Odometry
 from visualization_msgs.msg import Marker, MarkerArray
 from geometry_msgs.msg import Point
@@ -27,7 +27,7 @@ class Node:
             "/odometry/filtered", Odometry, self.odom_callback, queue_size=1)
 
         self.pub_lines = rospy.Publisher(
-            "/unet_lines", line_list, queue_size=1)
+            "/lines", line_list, queue_size=1)
 
         self.pub_left_line = rospy.Publisher(
             "/left_line", Marker, queue_size=1)
@@ -77,12 +77,10 @@ class Node:
                 line[2] = sx2 * np.sin(delta_yaw) + sy2 * np.cos(delta_yaw)
 
                 # Translate
-                line[0] -= delta_x
-                line[1] -= delta_y
-                line[2] -= delta_x
-                line[3] -= delta_y
-
-            print(delta_yaw, delta_x, delta_y)
+                line[0] -= delta_y
+                line[1] -= delta_x
+                line[2] -= delta_y
+                line[3] -= delta_x
 
             # msg = forward_line_list
 
